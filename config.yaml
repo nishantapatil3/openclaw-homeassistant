@@ -1,0 +1,48 @@
+name: OpenClaw AI
+version: 1.0.0
+slug: openclaw
+description: OpenClaw AI - AI-powered automation gateway for messaging platforms
+url: https://docs.openclaw.ai
+arch:
+  - amd64
+  - arm64
+init: false
+
+startup: services
+boot: auto
+hassio_api: false
+homeassistant_api: false
+discovery: []
+
+ports:
+  18789/tcp: 18789
+  1455/tcp: 1455
+
+ports_description:
+  18789/tcp: OpenClaw Gateway Web UI
+  1455/tcp: OAuth callback for OpenAI Codex
+
+host_network: false
+privileged: []
+
+volumes:
+  - /addon_configs/openclaw:/home/node/.openclaw:rw
+  - /addon_configs/openclaw/workspace:/home/node/workspace:rw
+
+map: []
+
+options:
+  extra_apt_packages: ""
+  extra_mounts: ""
+  sandbox_memory: "1g"
+  sandbox_memory_swap: "2g"
+  sandbox_cpus: 1
+
+schema:
+  extra_apt_packages: str?
+  extra_mounts: str?
+  sandbox_memory: str?
+  sandbox_memory_swap: str?
+  sandbox_cpus: int?
+
+image: ghcr.io/{username}/openclaw-{arch}
