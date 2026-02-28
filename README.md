@@ -13,32 +13,53 @@
 
 ## Installation
 
-### Option 1: Local Add-on Repository
+This add-on is installed locally on your Home Assistant instance.
 
-1. Copy the `openclaw` folder to your Home Assistant add-ons directory:
-   ```bash
-   cp -r openclaw /addon_configs/
-   ```
+### Prerequisites
 
-2. In Home Assistant, go to **Supervisor** → **Add-on Store**
+- Home Assistant OS or Home Assistant Supervised
+- Access to the Home Assistant file system (via SSH, Samba, or File Editor add-on)
+- At least 2 GB of available RAM
+
+### Step 1: Copy the Add-on Files
+
+Copy the `openclaw` folder to your Home Assistant add-ons configuration directory:
+
+**Via SSH/Terminal:**
+```bash
+# Navigate to your Home Assistant config directory
+cd /config
+
+# Copy the openclaw folder to add-ons
+cp -r /path/to/openclaw /addon_configs/openclaw
+```
+
+**Via Samba/File Editor:**
+1. Open your Home Assistant `config` folder in your file browser
+2. Copy the entire `openclaw` folder
+3. Paste it into the `/addon_configs/` directory
+
+### Step 2: Add the Local Repository
+
+1. In Home Assistant, navigate to **Settings** → **Add-ons**
+
+2. Click the **Add-on Store** button (bottom right)
 
 3. Click the three dots menu (⋮) in the top right corner
 
-4. Select **Repositories** → **Add** and enter the path to your local add-ons
+4. Select **Repositories**
 
-5. The OpenClaw AI add-on should now appear in the store
+5. Click **Add** and enter: `/addon_configs/openclaw`
 
-### Option 2: Manual Installation
+6. Click **Add** to confirm
 
-1. Clone or copy this add-on to your Home Assistant add-ons directory:
-   ```bash
-   mkdir -p /addon_configs/openclaw
-   cp -r * /addon_configs/openclaw/
-   ```
+### Step 3: Install the Add-on
 
-2. Reload the add-on store in Home Assistant
+1. The **OpenClaw AI** add-on should now appear in the add-on store
 
-3. Find and install "OpenClaw AI"
+2. Click on it and press **Install**
+
+3. Wait for the installation to complete (this may take a few minutes on first install)
 
 ## Configuration
 
