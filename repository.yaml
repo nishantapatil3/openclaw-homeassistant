@@ -1,0 +1,15 @@
+{
+  "name": "OpenClaw Home Assistant Add-ons",
+  "url": "https://github.com/openclaw-homeassistant/openclaw-homeassistant",
+  "maintainer": "OpenClaw Team <support@openclaw.ai>",
+  "addons": [
+    {
+      "name": "OpenClaw AI",
+      "slug": "openclaw",
+      "description": "AI-powered automation gateway for messaging platforms",
+      "url": "https://docs.openclaw.ai",
+      "repository": "https://github.com/openclaw-homeassistant/openclaw-homeassistant",
+      "arch": ["amd64", "arm64"]
+    }
+  ]
+}
