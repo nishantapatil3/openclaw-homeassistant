@@ -29,6 +29,11 @@ WORKDIR /home/node
 RUN git clone https://github.com/openclaw/openclaw.git /opt/openclaw \
     && chown -R node:node /opt/openclaw
 
+# Copy entrypoint script
+COPY rootfs/etc/cont-init.d/00-openclaw.sh /etc/cont-init.d/00-openclaw.sh
+COPY rootfs/usr/bin/run-openclaw.sh /usr/bin/run-openclaw.sh
+RUN chmod +x /etc/cont-init.d/00-openclaw.sh /usr/bin/run-openclaw.sh
+
 USER node
 WORKDIR /opt/openclaw
 
@@ -37,12 +42,6 @@ RUN pnpm install --frozen-lockfile
 
 # Expose ports
 EXPOSE 18789 1455
-
-# Copy entrypoint script
-COPY rootfs/etc/cont-init.d/00-openclaw.sh /etc/cont-init.d/00-openclaw.sh
-COPY rootfs/usr/bin/run-openclaw.sh /usr/bin/run-openclaw.sh
-
-RUN chmod +x /etc/cont-init.d/00-openclaw.sh /usr/bin/run-openclaw.sh
 
 # Set working directory
 WORKDIR /opt/openclaw
