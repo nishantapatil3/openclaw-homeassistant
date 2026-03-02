@@ -87,6 +87,31 @@ Non-main agent sessions can run in Docker sandboxes for isolation:
 4. Push: `git push origin main v<version>`
 5. Create GitHub release: `gh release create v<version> --title "v<version>" --notes "..."`
 
+### GitHub CLI (gh) Commands
+The `gh` command-line tool is used for GitHub operations:
+```bash
+# Create releases
+gh release create v1.0.13 --title "v1.0.13" --notes "..."
+
+# View releases
+gh release list
+gh release view v1.0.13
+
+# Manage issues and PRs
+gh issue create
+gh pr create
+gh pr list
+
+# Run GitHub Actions workflows
+gh workflow run build.yaml
+gh run list
+gh run watch
+
+# Repository management
+gh repo view
+gh repo sync
+```
+
 ## Version History
 
 | Version | Date | Changes |
