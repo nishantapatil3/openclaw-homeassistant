@@ -16,6 +16,9 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v4
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
       - name: Test build
         uses: home-assistant/builder@2024.08.2
         with:
