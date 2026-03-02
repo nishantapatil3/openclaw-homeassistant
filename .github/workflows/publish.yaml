@@ -19,11 +19,12 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
-      - name: Login to DockerHub
+      - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish
         uses: home-assistant/builder@2024.08.2
@@ -32,4 +33,4 @@ jobs:
             --aarch64 \
             --amd64 \
             --target openclaw \
-            --docker-hub ${{ secrets.DOCKERHUB_USERNAME }}
+            --docker-hub ghcr.io/${{ github.repository_owner }}
