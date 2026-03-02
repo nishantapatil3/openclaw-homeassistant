@@ -5,9 +5,12 @@ on:
     types: [published]
 
 jobs:
-  publish:
-    name: Publish
+  build:
+    name: Build ${{ matrix.arch }}
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch: [amd64, aarch64]
     permissions:
       contents: read
       packages: write
@@ -26,11 +29,10 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Publish
+      - name: Build and Publish
         uses: home-assistant/builder@2024.08.2
         with:
           args: |
-            --aarch64 \
-            --amd64 \
+            --${{ matrix.arch }} \
             --target openclaw \
             --docker-hub ghcr.io/${{ github.repository_owner }}
