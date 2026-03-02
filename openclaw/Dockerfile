@@ -34,6 +34,9 @@ COPY rootfs/etc/cont-init.d/00-openclaw.sh /etc/cont-init.d/00-openclaw.sh
 COPY rootfs/usr/bin/run-openclaw.sh /usr/bin/run-openclaw.sh
 RUN chmod +x /etc/cont-init.d/00-openclaw.sh /usr/bin/run-openclaw.sh
 
+# Create s6-overlay v3 compatible environment directory
+RUN mkdir -p /run/s6/container_environment
+
 USER node
 WORKDIR /opt/openclaw
 
