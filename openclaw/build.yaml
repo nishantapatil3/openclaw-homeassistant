@@ -1,5 +1,5 @@
-# Base image for Home Assistant builder
-# The actual OpenClaw image is multi-arch and pulled FROM ghcr.io/openclaw/openclaw:latest
+# Build from upstream OpenClaw multi-arch image
+# Dockerfile uses FROM ghcr.io/openclaw/openclaw:latest which is multi-arch
 build_from:
-  amd64: ghcr.io/home-assistant/amd64-base-debian:bullseye
-  aarch64: ghcr.io/home-assistant/aarch64-base-debian:bullseye
+  amd64: ghcr.io/openclaw/openclaw:latest
+  aarch64: ghcr.io/openclaw/openclaw:latest
