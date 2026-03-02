@@ -32,6 +32,9 @@ volumes:
 map: []
 
 options:
+  gateway_token: ""
+  allow_insecure_control_ui_auth: false
+  dangerously_disable_control_ui_device_auth: false
   extra_apt_packages: ""
   extra_mounts: ""
   sandbox_memory: "1g"
@@ -39,6 +42,9 @@ options:
   sandbox_cpus: 1
 
 schema:
+  gateway_token: str?
+  allow_insecure_control_ui_auth: bool?
+  dangerously_disable_control_ui_device_auth: bool?
   extra_apt_packages: str?
   extra_mounts: str?
   sandbox_memory: str?

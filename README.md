@@ -67,6 +67,9 @@ cp -r /path/to/openclaw /addon_configs/openclaw
 
 | Option | Description | Default |
 |--------|-------------|---------|
+| `gateway_token` | Fixed gateway token used by Control UI authentication | `""` (auto-generated) |
+| `allow_insecure_control_ui_auth` | Allow insecure Control UI auth fallback (can reduce pairing prompts on plain HTTP) | `false` |
+| `dangerously_disable_control_ui_device_auth` | Disable Control UI device auth/pairing checks (high risk) | `false` |
 | `extra_apt_packages` | Space-separated list of additional apt packages to install | `""` |
 | `extra_mounts` | Comma-separated bind mounts (source:target[:options]) | `""` |
 | `sandbox_memory` | Memory limit for agent sandboxes | `"1g"` |
@@ -76,12 +79,19 @@ cp -r /path/to/openclaw /addon_configs/openclaw
 ### Example Configuration
 
 ```yaml
+gateway_token: "replace-with-a-long-random-token"
+allow_insecure_control_ui_auth: false
+dangerously_disable_control_ui_device_auth: false
 extra_apt_packages: "ffmpeg build-essential"
 extra_mounts: "/media:/home/node/media:ro"
 sandbox_memory: "2g"
 sandbox_memory_swap: "4g"
 sandbox_cpus: 2
 ```
+
+If you see `unauthorized: gateway token mismatch`, set `gateway_token` to a fixed value and restart the add-on, then paste that token into Control UI settings.
+For this add-on, gateway auth cannot be fully disabled while binding to LAN (`--bind lan`); OpenClaw requires auth for non-loopback binds.
+If you see `pairing required`, you can set `allow_insecure_control_ui_auth: true`, and if still needed use `dangerously_disable_control_ui_device_auth: true` (not recommended for untrusted networks).
 
 ## Ports
 
