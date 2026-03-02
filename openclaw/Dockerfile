@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && if [ "$(uname -m)" = "aarch64" ]; then \
         S6_ARCH="aarch64"; \
     else \
-        S6_ARCH="x86_64"; \
+        S6_ARCH="amd64"; \
     fi \
     && curl -L -o /tmp/s6-overlay.tar.gz "https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-${S6_ARCH}.tar.gz" \
     && tar xzf /tmp/s6-overlay.tar.gz -C / \
