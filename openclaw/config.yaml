@@ -45,4 +45,4 @@ schema:
   sandbox_memory_swap: str?
   sandbox_cpus: int?
 
-image: ghcr.io/{username}/openclaw-{arch}
+image: ghcr.io/nishantapatil3/openclaw-{arch}
