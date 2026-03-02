@@ -21,13 +21,18 @@ This project uses two separate versioning schemes:
 - **Add-on version**: Tracks Home Assistant add-on specific changes and fixes
 
 ## Architecture
-The add-on is built using the Home Assistant add-on framework with:
-- **Base Image**: Debian Bullseye (Home Assistant official base images)
-- **s6-overlay**: v3 (init system for container lifecycle management)
-- **Runtime**: Node.js 22.x with pnpm (corepack)
+The add-on uses the official prebuilt OpenClaw image with Home Assistant integration:
+- **Base Image**: `ghcr.io/openclaw/openclaw:latest` (official multi-arch)
+- **Runtime**: Node.js 22 on Debian Bookworm (from OpenClaw base)
+- **HA Integration**: bashio for configuration, s6-overlay v3 for lifecycle
 - **Ports**: 
   - `18789/tcp` - OpenClaw Gateway Web UI
   - `1455/tcp` - OAuth callback for OpenAI Codex
+
+### Build Approach
+- **Prebuilt binaries**: Uses official OpenClaw image with pre-compiled native modules
+- **Multi-arch native**: amd64 and aarch64 supported without QEMU emulation
+- **Build time**: ~2-3 minutes (vs 15+ min when building from source)
 
 ## Directory Structure
 ```
@@ -127,6 +132,8 @@ gh repo sync
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 1.0.15 | 2026-03-02 | Use prebuilt OpenClaw image (ghcr.io/openclaw/openclaw:latest) |
+| 1.0.14 | 2026-03-02 | Add build-essential for node-llama-cpp compilation |
 | 1.0.13 | 2026-03-01 | Upgrade Node.js to 22.x (required by OpenClaw) |
 | 1.0.12 | 2026-03-01 | Fix pnpm install using corepack for correct version |
 | 1.0.11 | 2026-03-01 | Fix Docker build: ARG default, remove --frozen-lockfile |
@@ -135,32 +142,36 @@ gh repo sync
 
 ## Known Issues & Fixes
 
-### Node.js Version Requirement (v1.0.13)
+### Prebuilt Image Approach (v1.0.15+)
+**Architecture**: Using `ghcr.io/openclaw/openclaw:latest` as base image
+
+**Benefits**:
+- Fast builds (~2-3 min vs 15+ min)
+- Native multi-arch support (no QEMU emulation)
+- Pre-compiled native modules (llama.cpp, etc.)
+- Tracks latest OpenClaw releases automatically
+
+**Considerations**:
+- Base image is Debian Bookworm (not Bullseye)
+- To pin specific OpenClaw version, update `FROM` line in Dockerfile
+
+### Build Tools Required (v1.0.14 and earlier)
+**Issue**: `node-llama-cpp` postinstall fails with "C++ Compiler toolset is not available"
+
+**Cause**: llama.cpp needs to compile from source, requiring g++ and make
+
+**Fix** (v1.0.14+): Install `build-essential` package
+
+**Note**: Resolved in v1.0.15+ by using prebuilt image
+
+### Node.js Version Requirement (v1.0.13 and earlier)
 **Issue**: Build/runtime failures due to incompatible Node.js version
 
 **Cause**: OpenClaw requires Node.js >= 22
 
 **Fix**: Use NodeSource 22.x repository instead of 20.x
 
-### pnpm Install Failure (v1.0.12)
-**Issue**: `pnpm install --frozen-lockfile` fails during build
-
-**Cause**: 
-1. Global pnpm version mismatch with `package.json` `packageManager` field
-2. Shallow git clone may not include pnpm-lock.yaml
-
-**Fix**: 
-- Use `corepack enable pnpm` for correct version from package.json
-- Full git clone (not --depth 1)
-
-### s6-overlay v3 Compatibility (v1.0.10)
-**Issue**: `s6-envdir: fatal: unable to envdir /run/s6/container_environment: No such file or directory`
-
-**Cause**: Newer Home Assistant base images use s6-overlay v3, which has different environment directory structure than v2.
-
-**Fix**: 
-- Create `/run/s6/container_environment` directory in Dockerfile
-- Use `bullseye` base image (not `bookworm`)
+**Note**: Resolved in v1.0.15+ (base image includes Node.js 22)
 
 ## Build & Publish Workflows
 GitHub Actions workflows are configured in `.github/workflows/`:
