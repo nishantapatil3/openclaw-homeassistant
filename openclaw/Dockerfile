@@ -1,57 +1,37 @@
-ARG BUILD_FROM=ghcr.io/home-assistant/amd64-base-debian:bullseye
-FROM ${BUILD_FROM}
+# Use official OpenClaw image as base
+FROM ghcr.io/openclaw/openclaw:latest
 
 # Set shell
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-# Install required packages
+# Install bashio and s6-overlay compatibility
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
-    ca-certificates \
-    gnupg \
-    git \
-    build-essential \
-    && mkdir -p /etc/apt/keyrings \
-    && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
-    && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list \
-    && apt-get update \
-    && apt-get install -y nodejs \
-    && corepack enable pnpm \
+    jq \
+    && mkdir -p /etc/cont-init.d \
+    && mkdir -p /usr/bin \
+    && mkdir -p /run/s6/container_environment \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Create node user
-RUN useradd -m -u 1000 -s /bin/bash node
-
-# Set working directory
-WORKDIR /home/node
-
-# Clone OpenClaw repository
-RUN git clone https://github.com/openclaw/openclaw.git /opt/openclaw \
-    && chown -R node:node /opt/openclaw
-
-# Copy entrypoint script
+# Copy Home Assistant add-on scripts
 COPY rootfs/etc/cont-init.d/00-openclaw.sh /etc/cont-init.d/00-openclaw.sh
 COPY rootfs/usr/bin/run-openclaw.sh /usr/bin/run-openclaw.sh
 RUN chmod +x /etc/cont-init.d/00-openclaw.sh /usr/bin/run-openclaw.sh
 
-# Create s6-overlay v3 compatible environment directory
-RUN mkdir -p /run/s6/container_environment
+# Create node user (for HA add-on compatibility, uid 1000)
+# OpenClaw already runs as node user, so this is just for compatibility
+RUN id -u node >/dev/null 2>&1 || useradd -m -u 1000 -s /bin/bash node
 
-USER node
-WORKDIR /opt/openclaw
+# Ensure OpenClaw directories exist and have correct permissions
+RUN mkdir -p /home/node/.openclaw /home/node/workspace \
+    && chown -R node:node /home/node/.openclaw /home/node/workspace
 
-# Install dependencies using pnpm (version specified in package.json via corepack)
-RUN pnpm install --frozen-lockfile
-
-# Expose ports
-EXPOSE 18789 1455
+# Health check (inherited from base image, but override for HA compatibility)
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD node /opt/openclaw/openclaw.mjs health --token "${OPENCLAW_GATEWAY_TOKEN:-healthcheck}" || exit 1
 
 # Set working directory
 WORKDIR /opt/openclaw
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD node dist/index.js health --token "${OPENCLAW_GATEWAY_TOKEN:-healthcheck}" || exit 1
 
 ENTRYPOINT ["/usr/bin/run-openclaw.sh"]
