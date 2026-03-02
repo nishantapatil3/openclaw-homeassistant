@@ -1,6 +1,9 @@
 # Use official OpenClaw image as base
 FROM ghcr.io/openclaw/openclaw:latest
 
+# Switch to root for package installation
+USER root
+
 # Set shell
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -26,6 +29,9 @@ RUN id -u node >/dev/null 2>&1 || useradd -m -u 1000 -s /bin/bash node
 # Ensure OpenClaw directories exist and have correct permissions
 RUN mkdir -p /home/node/.openclaw /home/node/workspace \
     && chown -R node:node /home/node/.openclaw /home/node/workspace
+
+# Switch back to node user
+USER node
 
 # Health check (inherited from base image, but override for HA compatibility)
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
