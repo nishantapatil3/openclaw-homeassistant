@@ -9,6 +9,10 @@ This repository contains the Home Assistant add-on configuration for **OpenClaw 
 - **Documentation**: https://docs.openclaw.ai
 - **Upstream**: https://github.com/openclaw/openclaw
 
+### Versioning
+- **OpenClaw upstream**: Uses date-based versioning format `openclaw YYYY.M.D` (e.g., `openclaw 2026.2.26`)
+- **Home Assistant add-on**: Uses semantic versioning `1.0.x` with patch increments for add-on specific fixes
+
 ## Architecture
 The add-on is built using the Home Assistant add-on framework with:
 - **Base Image**: Debian Bullseye (Home Assistant official base images)
