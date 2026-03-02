@@ -4,12 +4,11 @@ OpenClaw AI add-on for Home Assistant.
 
 ## Quick Install (Home Assistant)
 
-1. Copy this repo's `openclaw` folder to your HA add-ons path:
-   - Target: `/addon_configs/openclaw`
-2. In Home Assistant: **Settings** -> **Add-ons** -> **Add-on Store** -> menu (⋮) -> **Repositories**.
-3. Add repository path: `/addon_configs/openclaw`.
-4. Open **OpenClaw AI** in the store and click **Install**.
-5. Start the add-on and open:
+1. In Home Assistant: **Settings** -> **Add-ons** -> **Add-on Store** -> menu (⋮) -> **Repositories**.
+2. Add repository URL:
+   - `https://github.com/nishantapatil3/openclaw-homeassistant`
+3. Open **OpenClaw AI** in the store and click **Install**.
+4. Start the add-on and open:
    - `http://<your-hassio-ip>:18789`
 
 ## Minimal Setup
