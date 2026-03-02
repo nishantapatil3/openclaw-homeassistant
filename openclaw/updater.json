@@ -1,0 +1,10 @@
+{
+  "github_beta": "true",
+  "last_update": "2026-03-02",
+  "paused": false,
+  "repository": "nishantapatil3/openclaw-homeassistant",
+  "slug": "openclaw",
+  "source": "github",
+  "upstream_repo": "openclaw/openclaw",
+  "upstream_version": "2026.3.1"
+}
