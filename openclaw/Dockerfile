@@ -1,4 +1,4 @@
-ARG BUILD_FROM
+ARG BUILD_FROM=ghcr.io/home-assistant/amd64-base-debian:bullseye
 FROM ${BUILD_FROM}
 
 # Set shell
@@ -41,7 +41,7 @@ USER node
 WORKDIR /opt/openclaw
 
 # Install dependencies
-RUN pnpm install --frozen-lockfile
+RUN pnpm install
 
 # Expose ports
 EXPOSE 18789 1455
