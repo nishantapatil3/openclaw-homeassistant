@@ -10,8 +10,15 @@ This repository contains the Home Assistant add-on configuration for **OpenClaw 
 - **Upstream**: https://github.com/openclaw/openclaw
 
 ### Versioning
-- **OpenClaw upstream**: Uses date-based versioning format `openclaw YYYY.M.D` (e.g., `openclaw 2026.2.26`)
-- **Home Assistant add-on**: Uses semantic versioning `1.0.x` with patch increments for add-on specific fixes
+This project uses two separate versioning schemes:
+
+| Version Type | Format | Example | Location |
+|--------------|--------|---------|----------|
+| **OpenClaw Upstream** | Date-based `YYYY.M.D` | `openclaw 2026.2.26` | Cloned from upstream repo |
+| **Home Assistant Add-on** | Semantic `MAJOR.MINOR.PATCH` | `1.0.14` | `openclaw/config.yaml` |
+
+- **Upstream version**: Tracks the OpenClaw project release (date-based)
+- **Add-on version**: Tracks Home Assistant add-on specific changes and fixes
 
 ## Architecture
 The add-on is built using the Home Assistant add-on framework with:
