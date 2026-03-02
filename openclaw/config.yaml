@@ -5,7 +5,7 @@ description: OpenClaw AI - AI-powered automation gateway for messaging platforms
 url: https://docs.openclaw.ai
 arch:
   - amd64
-  - arm64
+  - aarch64
 init: false
 
 startup: services
