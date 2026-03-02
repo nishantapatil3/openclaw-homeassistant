@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list \
     && apt-get update \
     && apt-get install -y nodejs \
-    && npm install -g pnpm \
+    && corepack enable pnpm \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -40,8 +40,8 @@ RUN mkdir -p /run/s6/container_environment
 USER node
 WORKDIR /opt/openclaw
 
-# Install dependencies
-RUN pnpm install
+# Install dependencies using pnpm (version specified in package.json via corepack)
+RUN pnpm install --frozen-lockfile
 
 # Expose ports
 EXPOSE 18789 1455
